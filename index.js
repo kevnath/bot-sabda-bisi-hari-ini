@@ -12,7 +12,7 @@ Promise.promisifyAll(redisClient)
 
 client.on('ready', () => {
   console.log('Sudah siap bersabda')
-  const diffSecs = 60 * 60 * 1000;
+  const diffSecs = 30 * 60 * 1000; // 30 minutes
   setInterval(async () => {
     const now = (new Date()).getTime()
     let lastTs = await redisClient.getAsync('lastTs')
@@ -34,11 +34,13 @@ function sendBcd() {
     'zpz amat',
     'zpz ya',
     'zepaz zepiz',
+    'zepiz',
+    'THOM',
     'MZZZZZZZZZ',
     'MZZMZMZMMZMZMZZMZMZ',
     'WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY'
   ]
-  ch.send(answers[Math.floor(Math.random()*answers.length)])
+  ch.send(pickAnswer(answers))
   redisClient.set('lastTs', (new Date()).getTime())
 }
 
@@ -47,23 +49,28 @@ client.on('message', (message) => {
 
   if(message.content.includes(client.user.toString())) {
     const answers = [
-      'apa lu ngetag" anjg ',
-      'bcd '
+      'apa lu ngetag" anjg',
+      'bcd',
+      'bcd anjg'
     ]
-    message.channel.send(answers[Math.floor(Math.random()*answers.length)] + message.author.toString())
+    message.channel.send(pickAnswer(answers) + ' ' + message.author.toString())
     return
   }
   
-  const msgText = message.content.toLowerCase()
-  const zepizMessages = ['zpz', 'zepiz', 'sepi', 'mzz', 'woy', 'woi', 'mzm']
+  const msgText = message.content.toLowerCase().trim()
+  const zepizMessages = ['zpz', 'zepiz', 'sepi', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
   const qerjaMessages = ['kerja', 'qerja']
-  const gamesMessages = ['monhun', 'opor', 'apex', 'monster hunter']
-  if(hasWord(msgText, zepizMessages)) {
+  const gamesMessages = ['monhun', 'opor', 'apex', 'monster hunter', 'main', 'mabar', 'maen']
+  if(msgText === 'bc' || msgText === 'bisi') {
+    message.channel.send('TERPUJILAH TUHAN')
+  } else if(msgText === 'rip') {
+    message.channel.send('rip')
+  } else if(hasWord(msgText, zepizMessages)) {
     const answers = [
       'bcd anjg',
       'qerja gblg'
     ]
-    message.channel.send(answers[Math.floor(Math.random()*answers.length)] + ' ' + message.author.toString())
+    message.channel.send(pickAnswer(answers) + ' ' + message.author.toString())
   } else if(hasWord(msgText, qerjaMessages)) {
     const imgAttach = new Discord.Attachment('https://media.discordapp.net/attachments/353098986678386708/639405055061131266/unknown.png')
     message.channel.send(imgAttach)
@@ -79,6 +86,10 @@ function hasWord(text, haystack) {
     if(text.includes(haystack[i])) return true
   }
   return false
+}
+
+function pickAnswer(answers) {
+  return answers[Math.floor(Math.random()*answers.length)]
 }
 
 client.login(process.env.DISCORD_TOKEN)

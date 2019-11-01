@@ -59,7 +59,7 @@ client.on('message', (message) => {
       'bcd anjg',
       'qerja gblg'
     ]
-    message.channel.send(answers[Math.floor(Math.random()*answers.length)] + ' ' + + message.author.toString())
+    message.channel.send(answers[Math.floor(Math.random()*answers.length)] + ' ' + message.author.toString())
   } else if(hasWord(msgText, qerjaMessages)) {
     const imgAttach = new Discord.Attachment('https://media.discordapp.net/attachments/353098986678386708/639405055061131266/unknown.png')
     message.channel.send(imgAttach)

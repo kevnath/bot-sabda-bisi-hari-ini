@@ -46,12 +46,16 @@ client.on('message', (message) => {
   if(message.author === client.user) return
 
   if(message.content.includes(client.user.toString())) {
-    message.channel.send('apa lu ngetag" anjg ' + message.author.toString())
+    const answers = [
+      'apa lu ngetag" anjg ',
+      'bcd '
+    ]
+    message.channel.send(answers[Math.floor(Math.random()*answers.length)] + message.author.toString())
     return
   }
   
   const msgText = message.content.toLowerCase()
-  const zepizMessages = ['zpz', 'zepiz', 'sepiz', 'mzz', 'woy']
+  const zepizMessages = ['zpz', 'zepiz', 'sepi', 'mzz', 'woy', 'woi', 'mzm']
   const qerjaMessages = ['kerja', 'qerja']
   const gamesMessages = ['monhun', 'opor', 'apex', 'monster hunter']
   if(hasWord(msgText, zepizMessages)) {

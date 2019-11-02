@@ -98,7 +98,6 @@ function pickAnswer(answers) {
   return answers[Math.floor(Math.random() * answers.length)]
 }
 
-
 function getDateStr(date = new Date()) {
   return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
 }

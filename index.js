@@ -12,7 +12,7 @@ Promise.promisifyAll(redisClient)
 
 client.on('ready', () => {
   console.log('Sudah siap bersabda')
-  const diffSecs = 60 * 60 * 1000; // 60 minutes
+  const diffSecs = 10 * 60 * 1000; // 60 minutes
   const startHour = 10,
     endHour = 21
   setInterval(async () => {
@@ -30,12 +30,9 @@ client.on('ready', () => {
       let lastTs = await redisClient.getAsync('lastTs')
       if (lastTs !== null) {
         lastTs = parseInt(lastTs)
-        if (now > lastTs + diffSecs) {
-          sendBcd()
-        }
-      } else {
-        sendBcd()
+        if (now < lastTs + diffSecs) return
       }
+      sendBcd()
     }
     redisClient.set('lastTs', (new Date()).getTime())
   }, 5000)

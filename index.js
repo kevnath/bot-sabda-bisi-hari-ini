@@ -12,9 +12,12 @@ Promise.promisifyAll(redisClient)
 
 client.on('ready', () => {
   console.log('Sudah siap bersabda')
-  const diffSecs = 30 * 60 * 1000; // 30 minutes
+  const diffSecs = 60 * 60 * 1000; // 60 minutes
   setInterval(async () => {
-    const now = (new Date()).getTime()
+    const d = new Date(),
+          now = d.getTime(),
+          currHour = d.getHours()
+    if(currHour < 10 || currHour > 22) return
     let lastTs = await redisClient.getAsync('lastTs')
     if (lastTs !== null) {
       lastTs = parseInt(lastTs)
@@ -62,7 +65,11 @@ client.on('message', (message) => {
   const qerjaMessages = ['kerja', 'qerja']
   const gamesMessages = ['monhun', 'opor', 'apex', 'monster hunter', 'main', 'mabar', 'maen']
   if(msgText === 'bc' || msgText === 'bisi') {
-    message.channel.send('TERPUJILAH TUHAN')
+    const answers = [
+      'PUJI DAN SYUKUR',
+      'TERPUJILAH TUHAN'
+    ]
+    message.channel.send(pickAnswer(answers))
   } else if(msgText === 'rip') {
     message.channel.send('rip')
   } else if(hasWord(msgText, zepizMessages)) {

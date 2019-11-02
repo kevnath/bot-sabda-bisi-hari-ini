@@ -12,7 +12,7 @@ Promise.promisifyAll(redisClient)
 
 client.on('ready', () => {
   console.log('Sudah siap bersabda')
-  const diffSecs = 10 * 60 * 1000; // 60 minutes
+  const diffSecs = 60 * 60 * 1000; // 60 minutes
   const startHour = 10,
     endHour = 21
   setInterval(async () => {

@@ -30,12 +30,9 @@ client.on('ready', () => {
       let lastTs = await redisClient.getAsync('lastTs')
       if (lastTs !== null) {
         lastTs = parseInt(lastTs)
-        if (now > lastTs + diffSecs) {
-          sendBcd()
-        }
-      } else {
-        sendBcd()
+        if (now < lastTs + diffSecs) return
       }
+      sendBcd()
     }
     redisClient.set('lastTs', (new Date()).getTime())
   }, 5000)

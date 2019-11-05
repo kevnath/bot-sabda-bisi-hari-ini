@@ -57,21 +57,25 @@ client.on('message', async (message) => {
   const msgText = message.content.toLowerCase().trim()
   const zepizMessages = ['zpz', 'zepiz', 'sepi', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
   const qerjaMessages = ['kerja', 'qerja']
-  const gamesMessages = ['monhun', 'opor', 'apex', 'monster hunter', 'main', 'mabar', 'maen']
+  const gamesMessages = ['main', 'mabar', 'maen']
 
-  if (msgText.includes(client.user.toString())) {
-    let sabda = ''
-    if(msgText.includes('sabda')) {
-      sabda = await getDailyQuote()
+  const botId = client.user.toString()
+  if (msgText.includes(botId)) {
+    if(msgText === botId + ' help') {
+      const sabdaImg = new Discord.Attachment('https://media.discordapp.net/attachments/641081733122490398/641166742483107841/bc_help.jpg')
+      message.channel.send(sabdaImg)
+    }
+    else if(msgText.includes('sabda')) {
+      const sabda = await getDailyQuote()
+      message.channel.send(sabda)
     } else {
       const answers = [
         'apa lu ngetag" anjg',
         'bcd',
         'bcd anjg'
       ]
-      sabda = pickAnswer(answers) + ' ' + message.author.toString()
+      message.channel.send(pickAnswer(answers) + ' ' + message.author.toString())
     }
-    message.channel.send(sabda)
   } else {
     if (msgText === 'bc' || msgText === 'bisi') {
       const answers = [

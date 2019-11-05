@@ -62,7 +62,6 @@ client.on('message', async (message) => {
   if (msgText.includes(client.user.toString())) {
     let sabda = ''
     if(msgText.includes('sabda')) {
-      console.log(true)
       sabda = await getDailyQuote()
     } else {
       const answers = [
@@ -130,8 +129,7 @@ async function getDailyQuote() {
     sabda = pickAnswer(answers)
     redisClient.setex(dailyKey, 3600 * 24, sabda)
   }
-  console.log(sabda)
-  return sabda
+  return '**SABDA BC HARI INI**\n' + sabda
 }
 
 client.login(process.env.DISCORD_TOKEN)

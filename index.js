@@ -7,12 +7,15 @@ const redis = require('redis'),
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT
   })
+const messageList = require('./message-list')
+const Message = require('./message')
 const Promise = require('bluebird')
 Promise.promisifyAll(redisClient)
 
 client.on('ready', () => {
   console.log('Sudah siap bersabda')
-  const diffSecs = 60 * 60 * 1000, // in minutes
+  const minutes = 120
+  const diffSecs = minutes * 60 * 1000,
     startHour = 10,
     endHour = 21,
     channel = client.channels.get(process.env.CHANNEL_BCD_ID)
@@ -20,33 +23,22 @@ client.on('ready', () => {
     const d = new Date(),
       now = d.getTime(),
       currHour = d.getHours()
-    if (currHour < startHour || currHour > endHour) return
+    if (currHour < startHour || currHour >= endHour) return
 
     const dailyKey = 'daily@' + getDateStr(),
           cache = await redisClient.getAsync(dailyKey)
-    let sabda = ''
+    let answer = null
     if(cache === null && currHour === startHour) {
-      sabda = await getDailyQuote()
+      answer = await getDailyQuote()
     } else {
       let lastTs = await redisClient.getAsync('lastTs')
       if (lastTs !== null) {
         lastTs = parseInt(lastTs)
         if (now < lastTs + diffSecs) return
       }
-      const answers = [
-        'zpz',
-        'zpz amat',
-        'zpz ya',
-        'zepaz zepiz',
-        'zepiz',
-        'THOM',
-        'MZZZZZZZZZ',
-        'MZZMZMZMMZMZMZZMZMZ',
-        'WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY WOY'
-      ]
-      sabda = pickAnswer(answers)
+      answer = pickAnswer(messageList.idleMessages)
     }
-    channel.send(sabda)
+    send(channel, answer)
     redisClient.set('lastTs', d.getTime())
   }, 5000)
 })
@@ -55,50 +47,54 @@ client.on('message', async (message) => {
   if (message.author === client.user) return
 
   const msgText = message.content.toLowerCase().trim()
-  const zepizMessages = ['zpz', 'zepiz', 'sepi', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
+  const zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
   const qerjaMessages = ['kerja', 'qerja']
-  const gamesMessages = ['monhun', 'opor', 'apex', 'monster hunter', 'main', 'mabar', 'maen']
+  const gamesMessages = ['main', 'mabar', 'maen']
 
-  if (msgText.includes(client.user.toString())) {
-    let sabda = ''
-    if(msgText.includes('sabda')) {
-      sabda = await getDailyQuote()
+  const botId = client.user.toString()
+  let answer = null
+  if (msgText.includes(botId)) {
+    if(msgText === botId + ' help') {
+      answer = new Message('https://media.discordapp.net/attachments/641081733122490398/641166742483107841/bc_help.jpg', 'attach')
+    } else if(msgText === botId + ' sabda') {
+      answer = await getDailyQuote()
     } else {
-      const answers = [
-        'apa lu ngetag" anjg',
-        'bcd',
-        'bcd anjg'
-      ]
-      sabda = pickAnswer(answers) + ' ' + message.author.toString()
+      answer = pickAnswer(messageList.tagMessages)
+      answer.content += ' ' + message.author.toString()
     }
-    message.channel.send(sabda)
   } else {
     if (msgText === 'bc' || msgText === 'bisi') {
-      const answers = [
-        'PUJI DAN SYUKUR',
-        'TERPUJILAH TUHAN'
-      ]
-      message.channel.send(pickAnswer(answers))
+      answer = pickAnswer(messageList.praiseMessages)
     } else if (msgText === 'rip') {
-      message.channel.send('rip')
+      answer = new Message('rip')
     } else if (msgText === 'bcd bc') {
-      message.channel.send('bcd bc <@' + process.env.BC_USER_ID + '>')
+      answer = new Message('bcd bc <@' + process.env.BC_USER_ID + '>')
     } else if (hasWord(msgText, zepizMessages)) {
       const answers = [
         'bcd anjg',
-        'qerja gblg'
+        'qerja gblg',
+        'bcd',
+        'sssssttt'
       ]
-      message.channel.send(pickAnswer(answers) + ' ' + message.author.toString())
+      answer = new Message(pickAnswer(answers) + ' ' + message.author.toString())
     } else if (hasWord(msgText, qerjaMessages)) {
-      const imgAttach = new Discord.Attachment('https://media.discordapp.net/attachments/353098986678386708/639405055061131266/unknown.png')
-      message.channel.send(imgAttach)
+      answer = new Message('https://media.discordapp.net/attachments/353098986678386708/639405055061131266/unknown.png', 'attach')
     } else if (hasWord(msgText, gamesMessages)) {
-      const imgAttach = new Discord.Attachment('https://cdn.discordapp.com/attachments/353098986678386708/599874632212021249/unknown.png')
-      message.channel.send(imgAttach)
+      answer = new Message('https://cdn.discordapp.com/attachments/353098986678386708/599874632212021249/unknown.png', 'attach')
     }
   }
+  if(answer !== null) send(message.channel, answer)
   redisClient.set('lastTs', (new Date()).getTime())
 })
+
+function send(channel, message) {
+  if(message.type === 'attach') {
+    const attach = new Discord.Attachment(message.content)
+    channel.send(attach)
+  } else {
+    channel.send(message.content)
+  }
+}
 
 function hasWord(text, haystack) {
   for (i = 0, c = haystack.length; i < c; i++) {
@@ -118,18 +114,15 @@ function getDateStr(date = new Date()) {
 async function getDailyQuote() {
   const dailyKey = 'daily@' + getDateStr(),
     cache = await redisClient.getAsync(dailyKey)
-  const answers = [
-    'qerja mzmz anjg',
-    'qerja woy'
-  ]
-  let sabda = ''
+  let answer = null
   if (cache !== null) {
-    sabda = cache
+    answer = JSON.parse(cache)
   } else {
-    sabda = pickAnswer(answers)
-    redisClient.setex(dailyKey, 3600 * 24, sabda)
+    answer = pickAnswer(messageList.dailyMessages)
+    redisClient.setex(dailyKey, 3600 * 24, JSON.stringify(answer))
   }
-  return '**SABDA BC HARI INI**\n' + sabda
+  answer.content = '**SABDA BC HARI INI**\n' + answer.content
+  return answer
 }
 
 client.login(process.env.DISCORD_TOKEN)

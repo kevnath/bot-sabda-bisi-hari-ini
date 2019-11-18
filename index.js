@@ -60,7 +60,7 @@ client.on('message', async (message) => {
       answer = await getDailyQuote()
     } else {
       answer = pickAnswer(messageList.tagMessages)
-      answer.content += ' ' + message.author.toString()
+      answer = new Message(answer.content + ' ' + message.author.toString(), answer.type)
     }
   } else {
     if (msgText === 'bc' || msgText === 'bisi') {
@@ -121,7 +121,7 @@ async function getDailyQuote() {
     answer = pickAnswer(messageList.dailyMessages)
     redisClient.setex(dailyKey, 3600 * 24, JSON.stringify(answer))
   }
-  answer.content = '**SABDA BC HARI INI**\n' + answer.content
+  answer = new Message('**SABDA BC HARI INI**\n' + answer.content, answer.type)
   return answer
 }
 

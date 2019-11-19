@@ -47,7 +47,7 @@ client.on('message', async (message) => {
   if (message.author === client.user) return
 
   const msgText = message.content.toLowerCase().trim()
-  const zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
+  const zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm', 'zepaz']
   const qerjaMessages = ['kerja', 'qerja']
   const gamesMessages = ['main', 'mabar', 'maen']
 
@@ -55,9 +55,21 @@ client.on('message', async (message) => {
   let answer = null
   if (msgText.includes(botId)) {
     if(msgText === botId + ' help') {
-      answer = new Message('https://media.discordapp.net/attachments/641081733122490398/641166742483107841/bc_help.jpg', 'attach')
-    } else if(msgText === botId + ' sabda') {
+      const answers = []
+      send(message.channel, new Message('https://media.discordapp.net/attachments/646276322225553408/646280337067999232/help.jpg', 'attach'))
+      answers.push(new Message('Command list:'))
+      answers.push(new Message('>>> **Sabda hari ini**:\n1. '+ botId + ' sabda\n2. ' + botId + ' berikanlah hambamu arahan\n\n**Puja BC**:\n1. puja ' + botId))
+      setTimeout(function() {
+        answers.forEach(function(ans) {
+          send(message.channel, ans)
+        })
+      }, 1500);
+      return
+    }
+    if(msgText === botId + ' sabda' || msgText === botId + ' berikanlah hambamu arahan') {
       answer = await getDailyQuote()
+    } else if(msgText === 'puja ' + botId) {
+      answer = pickAnswer(messageList.praiseMessages)
     } else {
       answer = pickAnswer(messageList.tagMessages)
       answer = new Message(answer.content + ' ' + message.author.toString(), answer.type)
@@ -81,6 +93,8 @@ client.on('message', async (message) => {
       answer = new Message('https://media.discordapp.net/attachments/353098986678386708/639405055061131266/unknown.png', 'attach')
     } else if (hasWord(msgText, gamesMessages)) {
       answer = new Message('https://cdn.discordapp.com/attachments/353098986678386708/599874632212021249/unknown.png', 'attach')
+    } else if (hasWord(msgText, ['gezecc', 'gezek', 'gesek', 'beli', 'khilaf', 'gas', 'gaz'])) {
+      answer = new Message('https://media.discordapp.net/attachments/646276322225553408/646278589553049621/gaz.jpg', 'attach')
     }
   }
   if(answer !== null) send(message.channel, answer)

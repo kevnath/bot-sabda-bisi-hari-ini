@@ -58,7 +58,9 @@ client.on('message', async (message) => {
       const answers = []
       send(message.channel, new Message('https://media.discordapp.net/attachments/646276322225553408/646280337067999232/help.jpg', 'attach'))
       answers.push(new Message('Command list:'))
-      answers.push(new Message('>>> **Sabda hari ini**:\n1. '+ botId + ' sabda\n2. ' + botId + ' berikanlah hambamu arahan\n\n**Puja BC**:\n1. puja ' + botId))
+      answers.push(new Message('>>> **Sabda hari ini**:\n1. '+ botId + 
+        ' sabda\n2. ' + botId + ' berikanlah hambamu arahan\n\n**Puja BC**:\n1. puja ' + botId + 
+        '\n2. bc\n3. bisi\n 4. puja bc'))
       setTimeout(function() {
         answers.forEach(function(ans) {
           send(message.channel, ans)
@@ -75,7 +77,7 @@ client.on('message', async (message) => {
       answer = new Message(answer.content + ' ' + message.author.toString(), answer.type)
     }
   } else {
-    if (msgText === 'bc' || msgText === 'bisi') {
+    if (msgText === 'bc' || msgText === 'bisi' || msgText === 'puja bc') {
       answer = pickAnswer(messageList.praiseMessages)
     } else if (msgText === 'rip') {
       answer = new Message('rip')

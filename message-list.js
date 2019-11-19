@@ -30,7 +30,7 @@ module.exports = {
   ],
   khilafMessages: [
     new Message('https://media.discordapp.net/attachments/646276322225553408/646278589553049621/gaz.jpg', 'attach'),
-    new Message('https://media.discordapp.net/attachments/646276322225553408/646298131109117970/Screenshot_20191014-183521_Instagram.jpg?width=400&height=131', 'attach'),
+    new Message('https://media.discordapp.net/attachments/646276322225553408/646298131109117970/Screenshot_20191014-183521_Instagram.jpg', 'attach'),
     new Message('https://media.discordapp.net/attachments/646276322225553408/646298193583407105/tinggal_gezek.png', 'attach'),
     new Message('https://media.discordapp.net/attachments/646276322225553408/646298197270200330/gezek.png', 'attach'),
     new Message('https://media.discordapp.net/attachments/646276322225553408/646300759217930240/gaz_trus.jpg', 'attach'),

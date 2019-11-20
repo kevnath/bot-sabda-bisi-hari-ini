@@ -137,7 +137,8 @@ async function getDailyQuote() {
     answer = pickAnswer(messageList.dailyMessages)
     redisClient.setex(dailyKey, 3600 * 24, JSON.stringify(answer))
   }
-  answer = new Message('**SABDA BC HARI INI**\n' + answer.content, answer.type)
+  if(answer.type === 'text')
+    answer = new Message('**SABDA BC HARI INI**\n' + answer.content, answer.type)
   return answer
 }
 

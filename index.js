@@ -47,7 +47,7 @@ client.on('message', async (message) => {
   if (message.author === client.user) return
 
   const msgText = message.content.toLowerCase().trim()
-  const zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm', 'zepaz']
+  const zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
   const qerjaMessages = ['kerja', 'qerja']
   const gamesMessages = ['main', 'mabar', 'maen']
 
@@ -60,7 +60,7 @@ client.on('message', async (message) => {
       answers.push(new Message('Command list:'))
       answers.push(new Message('>>> **Sabda hari ini**:\n1. '+ botId + 
         ' sabda\n2. ' + botId + ' berikanlah hambamu arahan\n\n**Puja BC**:\n1. puja ' + botId + 
-        '\n2. bc\n3. bisi\n 4. puja bc'))
+        '\n2. bc\n3. bisi\n4. puja bc'))
       setTimeout(function() {
         answers.forEach(function(ans) {
           send(message.channel, ans)
@@ -77,6 +77,7 @@ client.on('message', async (message) => {
       answer = new Message(answer.content + ' ' + message.author.toString(), answer.type)
     }
   } else {
+    const pattern = new RegExp('ze*p[^i]z+')
     if (msgText === 'bc' || msgText === 'bisi' || msgText === 'puja bc') {
       answer = pickAnswer(messageList.praiseMessages)
     } else if (msgText === 'rip') {
@@ -97,9 +98,20 @@ client.on('message', async (message) => {
       answer = new Message('https://cdn.discordapp.com/attachments/353098986678386708/599874632212021249/unknown.png', 'attach')
     } else if (hasWord(msgText, ['gezecc', 'gezek', 'gesek', 'beli', 'khilaf', 'gas', 'gaz'])) {
       answer = pickAnswer(messageList.khilafMessages)
+    } else if (pattern.test(msgText)) {
+      const answers = [
+        'zepiznya mana',
+        'zepiznya dong',
+        'zepiznya jgn lupa mz'
+      ]
+      answer = new Message(pickAnswer(answers) + ' ' + message.author.toString())
     }
   }
-  if(answer !== null) send(message.channel, answer)
+  if(answer !== null) {
+    setTimeout(function() {
+      send(message.channel, answer)
+    }, 700)
+  }
   redisClient.set('lastTs', (new Date()).getTime())
 })
 

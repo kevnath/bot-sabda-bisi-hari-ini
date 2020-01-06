@@ -46,7 +46,7 @@ client.on('ready', () => {
 client.on('message', async (message) => {
   if (message.author === client.user) return
 
-  const msgText = message.content.toLowerCase().trim()
+  const msgText = message.content.toLowerCase().trim().replace('<@!', '<@') // temporary
   const zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
   const qerjaMessages = ['kerja', 'qerja']
   const gamesMessages = ['main', 'mabar', 'maen']

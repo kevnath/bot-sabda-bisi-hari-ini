@@ -46,12 +46,15 @@ client.on('ready', () => {
 client.on('message', async (message) => {
   if (message.author === client.user) return
 
-  const msgText = message.content.toLowerCase().trim()
+  const msgText = message.content.toLowerCase().trim().replace('<@!', '<@') // temporary
   const zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm']
   const qerjaMessages = ['kerja', 'qerja']
   const gamesMessages = ['main', 'mabar', 'maen']
 
   const botId = client.user.toString()
+        senderId = message.author.toString()
+  const replyKey = 'reply:' + senderId
+  const replyCtx = await redisClient.getAsync(replyKey);
   let answer = null
   if (msgText.includes(botId)) {
     if(msgText === botId + ' help') {
@@ -74,8 +77,17 @@ client.on('message', async (message) => {
       answer = pickAnswer(messageList.praiseMessages)
     } else {
       answer = pickAnswer(messageList.tagMessages)
-      answer = new Message(answer.content + ' ' + message.author.toString(), answer.type)
+      answer = new Message(answer.content + ' ' + senderId, answer.type)
     }
+  } else if(replyCtx !== null) {
+    if(replyCtx === 'zepiz') {
+      if(msgText.includes('zepiz')) {
+        answer = pickAnswer(messageList.proudMessages)
+      } else {
+        answer = new Message('rip')
+      }
+    }
+    redisClient.delAsync(replyKey)
   } else {
     const pattern = new RegExp('ze*p[^i]z+')
     if (msgText === 'bc' || msgText === 'bisi' || msgText === 'puja bc') {
@@ -91,7 +103,7 @@ client.on('message', async (message) => {
         'bcd',
         'sssssttt'
       ]
-      answer = new Message(pickAnswer(answers) + ' ' + message.author.toString())
+      answer = new Message(pickAnswer(answers) + ' ' + senderId)
     } else if (hasWord(msgText, qerjaMessages)) {
       answer = new Message('https://media.discordapp.net/attachments/353098986678386708/639405055061131266/unknown.png', 'attach')
     } else if (hasWord(msgText, gamesMessages)) {
@@ -104,7 +116,8 @@ client.on('message', async (message) => {
         'zepiznya dong',
         'zepiznya jgn lupa mz'
       ]
-      answer = new Message(pickAnswer(answers) + ' ' + message.author.toString())
+      answer = new Message(pickAnswer(answers) + ' ' + senderId)
+      redisClient.setex(replyKey, 60*10, 'zepiz')
     }
   }
   if(answer !== null) {

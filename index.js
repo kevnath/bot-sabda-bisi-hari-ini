@@ -84,7 +84,7 @@ client.on('message', async (message) => {
       if(msgText.includes('zepiz')) {
         answer = pickAnswer(messageList.proudMessages)
       } else {
-        answer = new Message('rip')
+        answer = new Message('zdz')
       }
     }
     redisClient.delAsync(replyKey)
@@ -93,7 +93,7 @@ client.on('message', async (message) => {
     if (msgText === 'bc' || msgText === 'bisi' || msgText === 'puja bc') {
       answer = pickAnswer(messageList.praiseMessages)
     } else if (msgText === 'rip') {
-      answer = new Message('rip')
+      answer = new Message('https://cdn.discordapp.com/attachments/353098986678386708/701676651565547571/stamp-20190801214304.png', 'attach')
     } else if (msgText === 'bcd bc') {
       answer = new Message('bcd bc <@' + process.env.BC_USER_ID + '>')
     } else if (hasWord(msgText, zepizMessages)) {
@@ -129,11 +129,18 @@ client.on('message', async (message) => {
 })
 
 function send(channel, message) {
-  if(message.type === 'attach') {
-    const attach = new Discord.Attachment(message.content)
-    channel.send(attach)
-  } else {
-    channel.send(message.content)
+  try {
+    if(message.type === 'attach') {
+      const attach = new Discord.Attachment(message.content)
+      channel.send(attach)
+    } else {
+      channel.send(message.content)
+    }
+  } catch(e) {
+    console.log('error_log')
+    console.log(message)
+    console.log(channel)
+    console.log(e)
   }
 }
 

@@ -38,7 +38,15 @@ client.on('ready', () => {
       }
       answer = pickAnswer(messageList.idleMessages)
     }
-    send(channel, answer)
+    try {
+      send(channel, answer)
+    } catch(e) {
+      console.log('error_log')
+      console.log(answer)
+      console.log(channel)
+      console.log(e)
+      console.log('\n');
+    }
     redisClient.set('lastTs', d.getTime())
   }, 5000)
 })
@@ -59,14 +67,22 @@ client.on('message', async (message) => {
   if (msgText.includes(botId)) {
     if(msgText === botId + ' help') {
       const answers = []
-      send(message.channel, new Message('https://media.discordapp.net/attachments/646276322225553408/646280337067999232/help.jpg', 'attach'))
+      answers.push(new Message('https://media.discordapp.net/attachments/646276322225553408/646280337067999232/help.jpg', 'attach'))
       answers.push(new Message('Command list:'))
       answers.push(new Message('>>> **Sabda hari ini**:\n1. '+ botId + 
         ' sabda\n2. ' + botId + ' berikanlah hambamu arahan\n\n**Puja BC**:\n1. puja ' + botId + 
         '\n2. bc\n3. bisi\n4. puja bc'))
       setTimeout(function() {
         answers.forEach(function(ans) {
-          send(message.channel, ans)
+          try {
+            send(message.channel, ans)
+          } catch(e) {
+            console.log('error_log')
+            console.log(ans)
+            console.log(message.channel)
+            console.log(e)
+            console.log('\n');
+          }
         })
       }, 1500);
       return
@@ -122,25 +138,26 @@ client.on('message', async (message) => {
   }
   if(answer !== null) {
     setTimeout(function() {
-      send(message.channel, answer)
+      try {
+        send(message.channel, answer)
+      } catch(e) {
+        console.log('error_log')
+        console.log(answer)
+        console.log(message.channel)
+        console.log(e)
+        console.log('\n');
+      }
     }, 700)
   }
   redisClient.set('lastTs', (new Date()).getTime())
 })
 
 function send(channel, message) {
-  try {
-    if(message.type === 'attach') {
-      const attach = new Discord.Attachment(message.content)
-      channel.send(attach)
-    } else {
-      channel.send(message.content)
-    }
-  } catch(e) {
-    console.log('error_log')
-    console.log(message)
-    console.log(channel)
-    console.log(e)
+  if(message.type === 'attach') {
+    const attach = new Discord.Attachment(message.content)
+    channel.send(attach)
+  } else {
+    channel.send(message.content)
   }
 }
 

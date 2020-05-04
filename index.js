@@ -47,12 +47,6 @@ async function sendMessageByInterval(channel) {
     } else {
       answer = JSON.parse(dailyCache)
     }
-<<<<<<< Updated upstream
-    send(channel, answer)
-    redisClient.set('lastTs', d.getTime())
-  }, 5000)
-})
-=======
   } else {
     let lastTs = redisGet(lastChatKey)
     if (lastTs !== null) {
@@ -61,7 +55,6 @@ async function sendMessageByInterval(channel) {
     }
     answer = pickAnswer(messageList.idleMessages)
   }
->>>>>>> Stashed changes
 
   if (answer !== null) {
     send(channel, answer)
@@ -106,23 +99,12 @@ async function replyMessage(message) {
   if (msgText.includes(botId)) {
     if (msgText === botId + ' help') {
       const answers = []
-<<<<<<< Updated upstream
-      send(message.channel, new Message('https://media.discordapp.net/attachments/646276322225553408/646280337067999232/help.jpg', 'attach'))
-      answers.push(new Message('Command list:'))
-      answers.push(new Message('>>> **Sabda hari ini**:\n1. '+ botId + 
-        ' sabda\n2. ' + botId + ' berikanlah hambamu arahan\n\n**Puja BC**:\n1. puja ' + botId + 
-        '\n2. bc\n3. bisi\n4. puja bc'))
-      setTimeout(function() {
-        answers.forEach(function(ans) {
-          send(message.channel, ans)
-=======
       answers.push(new Message('https://media.discordapp.net/attachments/646276322225553408/646280337067999232/help.jpg', 'attach'))
       answers.push(new Message('Command list:\n >>> **Sabda hari ini**:\n1. ' + botId + ' sabda\n2. ' +
         botId + ' berikanlah hambamu arahan\n\n**Puja BC**:\n1. puja ' + botId + '\n2. puja bc'))
       setTimeout(function () {
         answers.forEach(function (ans) {
           send(channel, ans)
->>>>>>> Stashed changes
         })
       }, 1000);
       return
@@ -144,16 +126,12 @@ async function replyMessage(message) {
           console.log(ex)
         }
       } else {
-<<<<<<< Updated upstream
-        answer = new Message('rip')
-=======
         try {
           await message.react('😢')
         } catch(ex) {
           console.log(ex)
         }
         answer = new Message('zdz')
->>>>>>> Stashed changes
       }
     }
     await redisDel(replyKey)
@@ -162,7 +140,7 @@ async function replyMessage(message) {
     if (msgText === 'puja bc') {
       answer = pickAnswer(messageList.praiseMessages)
     } else if (msgText === 'rip') {
-      answer = new Message('rip')
+      answer = new Message('https://cdn.discordapp.com/attachments/353098986678386708/701676651565547571/stamp-20190801214304.png', 'attach')
     } else if (msgText === 'bcd bc') {
       answer = new Message(`bcd bc anjg <@!${process.env.BC_USER_ID}>`)
     } else if (hasWord(msgText, zepizMessages)) {

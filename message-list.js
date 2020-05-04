@@ -7,7 +7,8 @@ module.exports = {
     new Message('zepiz'),
     new Message('zpz bgt'),
     new Message('MZZMZMZMMZMZMZZMZMZ'),
-    new Message('WOY')
+    new Message('WOY'),
+    new Message('rip server')
   ],
   praiseMessages: [
     new Message('TERPUJILAH BC'),
@@ -40,6 +41,7 @@ module.exports = {
   ],
   proudMessages: [
     new Message('saya terharu'),
-    new Message('bangga saya')
+    new Message('bangga saya'),
+    new Message('rip')
   ]
 }

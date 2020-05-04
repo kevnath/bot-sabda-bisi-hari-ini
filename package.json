@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.7.1",
-    "discord.js": "^11.5.1",
+    "bluebird": "^3.7.2",
+    "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "redis": "^2.8.0"
+    "redis": "^3.0.2"
   }
 }

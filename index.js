@@ -28,7 +28,7 @@ discordClient.on('ready', () => {
   const channel = discordClient.channels.cache.get(process.env.CHANNEL_BCD_ID)
   setInterval(() => {
     sendMessageByInterval(channel)
-  }, 5000)
+  }, 5*1000)
 });
 
 async function sendMessageByInterval(channel) {
@@ -63,24 +63,18 @@ async function send(channel, message) {
   try {
     if (message.type === 'attach') {
       const attach = new Discord.MessageAttachment(message.content)
-      channel.send(attach)
+      await channel.send(attach)
     } else {
-      channel.send(message.content)
+      await channel.send(message.content)
     }
-    const d = new Date()
-    await redisSet(lastChatKey, d.getTime())
-  } catch (ex) {
-    console.log('error_sending_message_log', message, ex)
-  }
+  } catch (ex) {}
+  const d = new Date()
+  await redisSet(lastChatKey, d.getTime())
 }
 
 discordClient.on('message', (message) => {
   if (message.author === discordClient.user) return
-  try {
-    replyMessage(message)
-  } catch (ex) {
-    console.log('error_err_internal_log', message, ex)
-  }
+  replyMessage(message)
 });
 
 async function replyMessage(message) {

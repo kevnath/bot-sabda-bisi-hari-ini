@@ -56,6 +56,7 @@ async function sendMessageByInterval(channel) {
 
   if (answer !== null) {
     send(channel, answer)
+    updateLastChat()
   }
 }
 
@@ -68,6 +69,9 @@ async function send(channel, message) {
       await channel.send(message.content)
     }
   } catch (ex) {}
+}
+
+async function updateLastChat() {
   const d = new Date()
   await redisSet(lastChatKey, d.getTime())
 }
@@ -158,6 +162,7 @@ async function replyMessage(message) {
   if (answer !== null) {
     send(channel, answer)
   }
+  updateLastChat()
 }
 
 function hasWord(text, haystack) {

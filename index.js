@@ -19,7 +19,7 @@ const redis = require('redis'),
 const reminderMins = parseInt(process.env.REMINDER_MINUTES),
   startHour = parseInt(process.env.START_HOUR),
   endHour = parseInt(process.env.END_HOUR),
-  reminderSecs = reminderMins * 60 * 100,
+  reminderSecs = reminderMins * 60 * 1000,
   lastChatKey = 'last_chat_ts'
 
 discordClient.on('ready', () => {
@@ -46,7 +46,7 @@ async function sendMessageByInterval(channel) {
       await redisSetEx(dailyKey, 3600 * 24, JSON.stringify(answer))
     }
   } else {
-    let lastTs = redisGet(lastChatKey)
+    let lastTs = await redisGet(lastChatKey)
     if (lastTs !== null) {
       lastTs = parseInt(lastTs)
       if (d.getTime() < lastTs + reminderSecs) return

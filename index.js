@@ -49,7 +49,6 @@ async function sendMessageByInterval(channel) {
     let lastTs = await redisGet(lastChatKey)
     if (lastTs !== null) {
       lastTs = parseInt(lastTs)
-      console.log(reminderMins, reminderSecs, lastTs, d.getTime(), lastTs + reminderSecs)
       if (d.getTime() < lastTs + reminderSecs) return
     }
     answer = pickAnswer(messageList.idleMessages)

@@ -44,8 +44,6 @@ async function sendMessageByInterval(channel) {
     if (dailyCache === null) {
       answer = pickAnswer(messageList.dailyMessages)
       await redisSetEx(dailyKey, 3600 * 24, JSON.stringify(answer))
-    } else {
-      answer = JSON.parse(dailyCache)
     }
   } else {
     let lastTs = redisGet(lastChatKey)

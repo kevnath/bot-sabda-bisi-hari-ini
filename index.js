@@ -114,15 +114,11 @@ async function replyMessage(message) {
         answer = pickAnswer(messageList.proudMessages)
         try {
           await message.react('💯')
-        } catch(ex) {
-          console.log(ex)
-        }
+        } catch(ex) {}
       } else {
         try {
           await message.react('😢')
-        } catch(ex) {
-          console.log(ex)
-        }
+        } catch(ex) {}
         answer = new Message('zdz')
       }
     }

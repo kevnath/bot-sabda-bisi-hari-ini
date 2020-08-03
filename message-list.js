@@ -45,6 +45,6 @@ module.exports = {
     new Message('rip')
   ],
   defeatMessages: [
-    new Message('https://tenor.com/view/defeat-overwatch-video-game-defeat-screen-gif-17781733', 'attach')
+    new Message('https://media.tenor.com/images/17d9a6c0a9466773c0775b9330796b1d/tenor.gif', 'attach')
   ]
 }

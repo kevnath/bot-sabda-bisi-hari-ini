@@ -43,5 +43,8 @@ module.exports = {
     new Message('saya terharu'),
     new Message('bangga saya'),
     new Message('rip')
+  ],
+  defeatMessages: [
+    new Message('https://tenor.com/view/defeat-overwatch-video-game-defeat-screen-gif-17781733', 'attach')
   ]
 }

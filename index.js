@@ -148,6 +148,8 @@ async function replyMessage(message) {
       answer = new Message('https://cdn.discordapp.com/attachments/353098986678386708/599874632212021249/unknown.png', 'attach')
     } else if (hasWord(msgText, ['gezecc', 'gezek', 'gesek', 'beli', 'khilaf', 'gas', 'gaz'])) {
       answer = pickAnswer(messageList.khilafMessages)
+    } else if (hasWord(msgText, ['opor', 'overwatch', 'defeat'])) {
+      answer = pickAnswer(messageList.defeatMessages)
     } else if (pattern.test(msgText)) {
       const answers = [
         'zepiznya mana',

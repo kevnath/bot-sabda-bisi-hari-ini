@@ -87,6 +87,7 @@ async function replyMessage(message) {
     zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm'],
     qerjaMessages = ['kerja', 'qerja'],
     gamesMessages = ['main', 'mabar', 'maen'],
+    simpMessages = ['tom', 'simp', 'vtuber'],
     replyKey = 'reply:' + message.author.id,
     replyCtx = await redisGet(replyKey),
     botId = `<@!${discordClient.user.id}>`
@@ -148,6 +149,8 @@ async function replyMessage(message) {
       answer = new Message('https://cdn.discordapp.com/attachments/353098986678386708/599874632212021249/unknown.png', 'attach')
     } else if (hasWord(msgText, ['gezecc', 'gezek', 'gesek', 'beli', 'khilaf', 'gas', 'gaz'])) {
       answer = pickAnswer(messageList.khilafMessages)
+    } else if (hasWord(msgText, simpMessages)) {
+      answer = new Message('SIMP TEROOOOOS')
     } else if (hasWord(msgText, ['opor', 'overwatch', 'defeat'])) {
       answer = pickAnswer(messageList.defeatMessages)
     } else if (pattern.test(msgText)) {

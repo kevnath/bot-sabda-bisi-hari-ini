@@ -87,7 +87,7 @@ async function replyMessage(message) {
     zepizMessages = ['zpz', 'zepiz', 'mzz', 'woy', 'woi', 'mzm', 'mzzm'],
     qerjaMessages = ['kerja', 'qerja'],
     gamesMessages = ['main', 'mabar', 'maen'],
-    simpMessages = ['tom', 'simp', 'vtuber'],
+    simpMessages = ['simp', 'vtuber'],
     replyKey = 'reply:' + message.author.id,
     replyCtx = await redisGet(replyKey),
     botId = `<@!${discordClient.user.id}>`

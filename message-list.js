@@ -37,7 +37,8 @@ module.exports = {
     new Message('https://media.discordapp.net/attachments/646276322225553408/646300759217930240/gaz_trus.jpg', 'attach'),
     new Message('https://media.discordapp.net/attachments/646276322225553408/646300763253112832/tinggal_gaz.jpg', 'attach'),
     new Message('https://media.discordapp.net/attachments/646276322225553408/646301235179290645/buruan_gaz.jpg', 'attach'),
-    new Message('https://media.discordapp.net/attachments/646276322225553408/646299096751144961/no_bacot.jpg', 'attach')
+    new Message('https://media.discordapp.net/attachments/646276322225553408/646299096751144961/no_bacot.jpg', 'attach'),
+    new Message('https://media1.tenor.com/images/c874d35bcbe1b5620009085a5d8686cd/tenor.gif', 'attach')
   ],
   proudMessages: [
     new Message('saya terharu'),
